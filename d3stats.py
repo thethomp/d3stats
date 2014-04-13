@@ -16,6 +16,9 @@ start_time_var = Tkinter.StringVar()
 stop_time_var = Tkinter.StringVar()
 run_time_var = Tkinter.StringVar()
 
+## Paragon checkbox var
+paragon_lvl_var = Tkinter.IntVar()
+
 ##########
 ## Functions
 ##########
@@ -47,8 +50,8 @@ stop_time_label = Tkinter.Label(top,text="Stop Time").grid(row=1,column=2)
 total_time_label = Tkinter.Label(top,text="Run Length").grid(row=2,column=2)
 
 ##XP Labels
-xp_before_label = Tkinter.Label(top,text="XP Before",fg='red').grid(row=3,column=0)
-xp_after_label = Tkinter.Label(top,text="XP After",fg='red').grid(row=4,column=0)
+xp_before_label = Tkinter.Label(top,text="XP Before",fg='red').grid(row=4,column=0)
+xp_after_label = Tkinter.Label(top,text="XP After",fg='red').grid(row=5,column=0)
 
 ## Timestamp fields
 start_timestamp = Tkinter.Label(top,textvariable=start_time_var,width=10).grid(row=0,column=1)
@@ -56,8 +59,16 @@ stop_timestamp = Tkinter.Label(top,textvariable=stop_time_var,width=10).grid(row
 total_timestamp = Tkinter.Label(top,textvariable=run_time_var,width=10).grid(row=2,column=1)
 
 ##XP fields
-xp_before_field = Tkinter.Entry(top).grid(row=3,column=1,columnspan=2)
-xp_after_field = Tkinter.Entry(top).grid(row=4,column=1,columnspan=2)
+xp_before_field1 = Tkinter.Entry(top,width=12).grid(row=4,column=1)#,columnspan=2)
+xp_before_field2 = Tkinter.Entry(top,width=12).grid(row=4,column=2)#,columnspan=2)
+xp_level_field1 = Tkinter.Entry(top,width=3).grid(row=4,column=3)
+
+xp_after_field1 = Tkinter.Entry(top,width=12).grid(row=5,column=1)#,columnspan=2)
+xp_after_field2 = Tkinter.Entry(top,width=12).grid(row=5,column=2)#,columnspan=2)
+xp_level_field2 = Tkinter.Entry(top,width=3).grid(row=5,column=3)
+
+## Paragon level check buttons
+paragon_lvl_checkbox = Tkinter.Checkbutton(top,text="Paragon",variable=paragon_lvl_var).grid(row=4,column=4,rowspan=2)
 
 ## Timer Buttons
 start_timer_button = Tkinter.Button(top,text="Start",command=update_time).grid(row=0,column=0)
