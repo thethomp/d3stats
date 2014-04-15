@@ -1,8 +1,12 @@
 jim -- IN PROGRESS -- Add remaining elements to GUI to reflect the prototype image.
 jim -- NOT STARTED -- Add text label and field for user to put their name.
+jim -- NOT STARTED -- Add check boxes for full clear or partial clear
+jim -- NOT STARTED -- Add counters and field for # of deaths
+jim -- NOT STARTED -- Add check box for adventure mode
+jim -- NOT STARTED -- Add drop down menu for bounties (don't worry about what to populate it with yet)
 
-mike -- IN PROGRESS -- Create d3stats database and tables
-mike -- NOT STARTED -- Populate difficulty and map tables with game data
+mike -- COMPLETE -- Create d3stats database and tables
+mike -- IN PROGRESS -- Populate difficulty and map tables with game data
 mike -- NOT STARTED -- Establish connection with database upon launch of the GUI
 mike -- NOT STARTED -- Add indicator on GUI as to whether or not there is a successful connection to DB
 
