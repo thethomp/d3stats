@@ -184,8 +184,8 @@ lege_label = Tkinter.Entry(top,textvariable=lege_mob_var,width=3).grid(row=12,co
 lege_add_button= Tkinter.Button(top,text="+",command=lege_add).grid(row=12,column=3)
 
 ## Difficulty Menu
-#difficulty_dropdown = Tkinter.OptionMenu(top,difficulty_var,DIFFICULTY).grid(row=13,column=0)
-difficulty_dropdown = apply(Tkinter.OptionMenu,(top,difficulty_var) + tuple(DIFFICULTY)).grid(row=13,column=0)
+difficulty_dropdown = Tkinter.OptionMenu(top,difficulty_var,*DIFFICULTY).grid(row=13,column=0)
+#difficulty_dropdown = apply(Tkinter.OptionMenu,(top,difficulty_var) + tuple(DIFFICULTY)).grid(row=13,column=0)
 
 #difficulty_mb = Menubutton(top,text="Difficulty",relief=RAISED)
 #difficulty_mb.grid(row=13,column=0)
