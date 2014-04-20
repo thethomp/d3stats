@@ -1,12 +1,21 @@
-
-m datetime import datetime
-import Tkinter, time
+#!/usr/bin/python
+from datetime import datetime
+from Tkinter import *
+import Tkinter, time, tkMessageBox
 
 ############
 ## master window creation and config
 ############
 top = Tkinter.Tk()
 top.title("GGD3Stats")
+
+####
+# dropdown menu vars
+###
+DIFFICULTY = ['Normal','Hard','Expert','Master','Torment 1',
+'Torment 2','Torment 3','Torment 4','Torment 5','Torment 6']
+difficulty_var = StringVar(top)
+difficulty_var.set('Difficulty')
 
 #########
 ## string var declarations for all the labels and fields
@@ -29,6 +38,10 @@ gold_after_var = Tkinter.StringVar()
 
 ## yellow mob vars
 yellow_mob_var = Tkinter.IntVar()
+blue_mob_var = Tkinter.IntVar()
+gob_mob_var = Tkinter.IntVar()
+purp_mob_var = Tkinter.IntVar()
+lege_mob_var = Tkinter.IntVar()
 
 ##########
 ## Functions
@@ -67,6 +80,30 @@ def yellow_subtract():
 def yellow_add():
     yellow_mob_var.set(yellow_mob_var.get()+1)
 
+def blue_subtract():
+    blue_mob_var.set(blue_mob_var.get()-1)
+    
+def blue_add():
+    blue_mob_var.set(blue_mob_var.get()+1)
+
+def gob_subtract():
+    gob_mob_var.set(gob_mob_var.get()-1)
+    
+def gob_add():
+    gob_mob_var.set(gob_mob_var.get()+1)
+
+def purp_subtract():
+    purp_mob_var.set(purp_mob_var.get()-1)
+
+def purp_add():
+    purp_mob_var.set(purp_mob_var.get()+1)
+
+def lege_subtract():
+    lege_mob_var.set(lege_mob_var.get()-1)
+
+def lege_add():
+    lege_mob_var.set(lege_mob_var.get()+1)
+    
 ###############
 # Layout management
 ################
@@ -76,7 +113,7 @@ stop_time_label = Tkinter.Label(top,text="Stop Time").grid(row=1,column=2)
 total_time_label = Tkinter.Label(top,text="Run Length").grid(row=2,column=2)
 
 ##XP Labels
-xp_before_label = Tkinter.Label(top,text="XP Before",fg='red')
+xp_before_label = Tkinter.Label(top,text="XP Before",fg='red',width=18)
 xp_before_label.grid(row=4,column=0)
 xp_after_label = Tkinter.Label(top,text="XP After",fg='red')
 xp_after_label.grid(row=5,column=0)
@@ -85,6 +122,10 @@ xp_after_label.grid(row=5,column=0)
 blue_mob_label = Tkinter.Label(top,text="Blue Mobs",bg='blue',fg='white').grid(row=8,column=0)
 yellow_mob_label = Tkinter.Label(top,text="Yellow Mobs",bg='yellow').grid(row=9,column=0)
 gob_mob_label = Tkinter.Label(top,text="Treasure Gobs",bg='brown').grid(row=10,column=0)
+purp_mob_label = Tkinter.Label(top,text="Purple Mobs",bg='purple').grid(row=11,column=0)
+
+##Legendary Label
+lege_item_label = Tkinter.Label(top,text="Legendaries",bg="orange",fg="black").grid(row=12,column=0)
 
 ## Timestamp fields
 start_timestamp = Tkinter.Label(top,textvariable=start_time_var,width=10).grid(row=0,column=1)
@@ -122,14 +163,50 @@ clear_timers_button = Tkinter.Button(top,text="Clear",command=clear_time).grid(r
 #xp_change_button = Tkinter.Button(top,text="Change",command=find_xp_gain).grid(row=6,column=0)
 
 ## yellow mobs
-yellow_subtract_button= Tkinter.Button(top,text="-",command=yellow_subtract).grid(row=8,column=1)
-yellow_label = Tkinter.Entry(top,textvariable=yellow_mob_var,width=3).grid(row=8,column=2)
-yellow_add_button= Tkinter.Button(top,text="+",command=yellow_add).grid(row=8,column=3)
+blue_subtract_button= Tkinter.Button(top,text="-",command=blue_subtract).grid(row=8,column=1)
+blue_label = Tkinter.Entry(top,textvariable=blue_mob_var,width=3).grid(row=8,column=2)
+blue_add_button= Tkinter.Button(top,text="+",command=blue_add).grid(row=8,column=3)
+
+yellow_subtract_button= Tkinter.Button(top,text="-",command=yellow_subtract).grid(row=9,column=1)
+yellow_label = Tkinter.Entry(top,textvariable=yellow_mob_var,width=3).grid(row=9,column=2)
+yellow_add_button= Tkinter.Button(top,text="+",command=yellow_add).grid(row=9,column=3)
+
+gob_subtract_button= Tkinter.Button(top,text="-",command=gob_subtract).grid(row=10,column=1)
+gob_label = Tkinter.Entry(top,textvariable=gob_mob_var,width=3).grid(row=10,column=2)
+gob_add_button= Tkinter.Button(top,text="+",command=gob_add).grid(row=10,column=3)
+
+purp_subtract_button= Tkinter.Button(top,text="-",command=purp_subtract).grid(row=11,column=1)
+purp_label = Tkinter.Entry(top,textvariable=purp_mob_var,width=3).grid(row=11,column=2)
+purp_add_button= Tkinter.Button(top,text="+",command=purp_add).grid(row=11,column=3)
+
+lege_subtract_button= Tkinter.Button(top,text="-",command=lege_subtract).grid(row=12,column=1)
+lege_label = Tkinter.Entry(top,textvariable=lege_mob_var,width=3).grid(row=12,column=2)
+lege_add_button= Tkinter.Button(top,text="+",command=lege_add).grid(row=12,column=3)
+
+## Difficulty Menu
+#difficulty_dropdown = Tkinter.OptionMenu(top,difficulty_var,DIFFICULTY).grid(row=13,column=0)
+difficulty_dropdown = apply(Tkinter.OptionMenu,(top,difficulty_var) + tuple(DIFFICULTY)).grid(row=13,column=0)
+
+#difficulty_mb = Menubutton(top,text="Difficulty",relief=RAISED)
+#difficulty_mb.grid(row=13,column=0)
+#difficulty_mb.grid()
+#difficulty_mb.menu = Menu(difficulty_mb,tearoff=0)
+#difficulty_mb["menu"] = difficulty_mb.menu
+#diff_var_t1 = IntVar()
+#difficulty_mb.menu.add_checkbutton(label="Torment 1",variable=diff_var_t1)
+#difficulty_mb.pack()
+
+# the constructor syntax is:
+# OptionMenu(master, variable, *values)
+
+#variable = StringVar(top)
+#variable.set(OPTIONS[0]) # default value
+#difficulty = apply(Tkinter.OptionMenu, (top, variable) + tuple(OPTIONS)).grid(row=14,column=2)
+#w.pack()
 
 
 ####
 # Mainloop
 ###
 top.mainloop()
-
 
