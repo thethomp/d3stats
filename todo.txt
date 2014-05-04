@@ -1,3 +1,38 @@
+--- FEATURES ---
+* Add database connectivity
+
+* Instead of traditional database connectivity, maybe we develop a web service to send the data to the DB
+	* Possibilities: REST, SOAP, others?
+	* Perk: User won't have to install entire DBMS software -- This lifts a HUGE burden off of us and user
+	* Instead of directly writing to the database, we transfer the data in a flat file (like an XML) to the server
+	* A process that runs on the server picks up the file and inserts the data into the DB
+	* Later: 
+		* Need to add username and password fields to GUI to verify connection
+			* How to validate user? Use security token of some sort?
+		* Indicator on GUI letting user know they have a live connection
+
+* Offline option
+	* Compile local config that comes with program upon installation
+		* This config will have all the map names, bounties, etc
+	* Possibly implement an option to sync this file with an online master config that we keep updated
+		* User can have the option of syncing with that file to update it when they are online sometime
+		* Can host the master config on the cloud server where the DB lives
+	
+--- ADDITIONAL DATA TO COLLECT ---
+* Counter for # of deaths
+* Adventure mode check box
+* Full clear/partial clear check box (not sure if this is really necessary)
+* Character class, name
+
+--- ENHANCEMENTS ---
+* Make sure everything is accessible via tabbing
+* Possibly bind certain functionality in the GUI to keys on keyboard or mouse
+
+
+
+###################################################
+----------- BELOW = OLD  --------------
+###########################################
 jim -- COMPLETE-- Add remaining elements to GUI to reflect the prototype image.
 jim -- NOT STARTED -- Add text label and field for user to put their name.
 jim -- NOT STARTED -- Add check boxes for full clear or partial clear
