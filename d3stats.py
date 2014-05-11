@@ -2,6 +2,8 @@
 from datetime import datetime
 from Tkinter import *
 import Tkinter, time, tkMessageBox
+import csv
+import urllib,urllib2
 
 ############
 ## master window creation and config
@@ -24,6 +26,8 @@ MOBS_FRAME.grid(row=2,column=0)
 DROPDOWN_FRAME = Tkinter.Frame(top)
 DROPDOWN_FRAME.grid(row=1,column=1)
 
+SUBMIT_FRAME = Tkinter.Frame(top)
+SUBMIT_FRAME.grid(row=2,column=1)
 #DD_FRAME = Tkinter.Frame(top)
 
 # dropdown menu vars
@@ -33,18 +37,27 @@ difficulty_var = StringVar(DROPDOWN_FRAME)
 difficulty_var.set('Difficulty')
 
 # Map dropdown vars
-MAP = ['ACT I - New Tristram', 'ACT I - The Old Ruins']
+MAP = []
+with open('server/config/maps.csv','rb') as map_csv:
+	maps = csv.reader(map_csv,delimiter=',')
+	for map in maps:
+		act = map[0]
+		name = map[1]
+		MAP.append('Act ' + act + ' - ' + name)
 map_var = StringVar(DROPDOWN_FRAME)
 map_var.set('Map')
 
 # Bounty drowpdown vars
-BOUNTY = ["Kill the Skeleton King","Clear the Scavenger's Den"]
+BOUNTY = ['Not implemented yet']
 bounty_var = StringVar(DROPDOWN_FRAME)
 bounty_var.set('Bounty')
 
 #########
 ## string var declarations for all the labels and fields
 #########
+## Notes var
+notes_var = Tkinter.StringVar()
+
 ## Timer vars
 start_time_var = Tkinter.StringVar()
 stop_time_var = Tkinter.StringVar()
@@ -54,12 +67,16 @@ run_time_var = Tkinter.StringVar()
 paragon_lvl_var = Tkinter.IntVar()
 
 ## XP entry field var
-xp_before_var = Tkinter.StringVar()
-xp_after_var = Tkinter.StringVar()
+xp_before_var1 = Tkinter.IntVar()
+xp_before_var2 = Tkinter.IntVar()
+xp_after_var1 = Tkinter.IntVar()
+xp_after_var2 = Tkinter.IntVar()
+xp_before_lvl_var = Tkinter.IntVar()
+xp_after_lvl_var = Tkinter.IntVar()
 
 ## Gold vars
-gold_before_var = Tkinter.StringVar()
-gold_after_var = Tkinter.StringVar()
+gold_before_var = Tkinter.IntVar()
+gold_after_var = Tkinter.IntVar()
 
 ## yellow mob vars
 yellow_mob_var = Tkinter.IntVar()
@@ -87,10 +104,17 @@ def clear_time():
 	run_time_var.set("")
 
 def find_xp_gain():
-    if xp_before_var.get() != "" and xp_after_var.get() != "":
-        xp_b = (int)(xp_before_var.get())
-        xp_a = (int)(xp_after_var.get())
-        change = abs(xp_a - xp_b)
+	if xp_before_lvl_var.get() == xp_after_lvl_var.get():
+		return xp_after_var1.get() - xp_before_var1.get()
+	else:
+		return (xp_before_var2.get()-xp_before_var1.get()) + xp_after_var1.get()
+
+def submit_test():
+#@route('/insert_run/<total_time>/<map_id>/<xp_gain>/<legend_drops>/<goblin_count>/<gold_gain>/<y_mobs>/<b_mobs>/<p_mobs>/<difficulty>/<notes>')
+	insert_url = 'http://107.170.195.104:8080/insert_run/'+'0'+run_time_var.get().replace(':','')+'/'+map_var.get()+'/'+str(find_xp_gain())+'/'+str(lege_mob_var.get())+'/'+str(gob_mob_var.get())+'/'+str(gold_after_var.get()-gold_before_var.get())+'/'+str(yellow_mob_var.get())+'/'+str(blue_mob_var.get())+'/'+str(purp_mob_var.get())+'/'+str(difficulty_var.get())+'/'+notes_var.get()
+	fmt_url = urllib.quote(insert_url,safe="%/:=&?~#+!$,;'@()*[]")
+	response = urllib2.urlopen(fmt_url)
+	print response.read()
 
 def yellow_subtract():
     yellow_mob_var.set(yellow_mob_var.get()-1)
@@ -121,6 +145,7 @@ def lege_subtract():
 
 def lege_add():
     lege_mob_var.set(lege_mob_var.get()+1)
+
     
 ###############
 # Layout management
@@ -151,15 +176,15 @@ stop_timestamp = Tkinter.Label(TIME_FRAME,textvariable=stop_time_var,width=10).g
 total_timestamp = Tkinter.Label(TIME_FRAME,textvariable=run_time_var,width=10).grid(row=2,column=1)
 
 ##XP fields
-xp_before_field1 = Tkinter.Entry(XP_FRAME,textvariable=xp_before_var,width=10)
+xp_before_field1 = Tkinter.Entry(XP_FRAME,textvariable=xp_before_var1,width=10)
 xp_before_field1.grid(row=0,column=1)#,columnspan=2)
-xp_before_field2 = Tkinter.Entry(XP_FRAME,width=10).grid(row=0,column=2)#,columnspan=2)
-xp_level_field1 = Tkinter.Entry(XP_FRAME,width=3).grid(row=0,column=3)
+xp_before_field2 = Tkinter.Entry(XP_FRAME,textvariable=xp_before_var2,width=10).grid(row=0,column=2)#,columnspan=2)
+xp_level_field1 = Tkinter.Entry(XP_FRAME,textvariable=xp_before_lvl_var,width=3).grid(row=0,column=3)
 
-xp_after_field1 = Tkinter.Entry(XP_FRAME,textvariable=xp_after_var,width=10)
+xp_after_field1 = Tkinter.Entry(XP_FRAME,textvariable=xp_after_var1,width=10)
 xp_after_field1.grid(row=1,column=1)#,columnspan=2)
-xp_after_field2 = Tkinter.Entry(XP_FRAME,width=10).grid(row=1,column=2)#,columnspan=2)
-xp_level_field2 = Tkinter.Entry(XP_FRAME,width=3).grid(row=1,column=3)
+xp_after_field2 = Tkinter.Entry(XP_FRAME,textvariable=xp_after_var2,width=10).grid(row=1,column=2)#,columnspan=2)
+xp_level_field2 = Tkinter.Entry(XP_FRAME,textvariable=xp_after_lvl_var,width=3).grid(row=1,column=3)
 
 ## gold fields
 start_gold_label = Tkinter.Label(GOLD_FRAME,text='Starting Gold',width=10).grid(row=6,column=0)
@@ -203,7 +228,13 @@ difficulty_dropdown = Tkinter.OptionMenu(DROPDOWN_FRAME,difficulty_var,*DIFFICUL
 map_dropdown = Tkinter.OptionMenu(DROPDOWN_FRAME,map_var,*MAP).grid(row=0,column=1)
 
 # Bounty dropdown
-bounty_dropdown = Tkinter.OptionMenu(DROPDOWN_FRAME,bounty_var,*BOUNTY).grid(row=1,column=0,columnspan=2)
+#bounty_dropdown = Tkinter.OptionMenu(DROPDOWN_FRAME,bounty_var,*BOUNTY).grid(row=1,column=0,columnspan=2)
+
+## Submit data button
+submit_button = Tkinter.Button(SUBMIT_FRAME,text="Submit test",command=submit_test).grid(row=1,column=1)
+
+## Notes field
+notes_field = Tkinter.Entry(DROPDOWN_FRAME,textvariable=notes_var).grid(row=1,column=0,columnspan=2)
 
 ####
 # Mainloop
