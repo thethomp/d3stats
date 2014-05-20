@@ -30,6 +30,11 @@ SUBMIT_FRAME = Tkinter.Frame(top)
 SUBMIT_FRAME.grid(row=2,column=1)
 #DD_FRAME = Tkinter.Frame(top)
 
+# Act var
+ACT = ['Act I','Act II','Act III','Act IV','Act V']
+act_var = StringVar(DROPDOWN_FRAME)
+act_var.set('Act')
+
 # dropdown menu vars
 DIFFICULTY = ['Normal','Hard','Expert','Master','Torment 1',
 'Torment 2','Torment 3','Torment 4','Torment 5','Torment 6']
@@ -37,20 +42,27 @@ difficulty_var = StringVar(DROPDOWN_FRAME)
 difficulty_var.set('Difficulty')
 
 # Map dropdown vars
-MAP = []
+MAP=['Map']
+MAP_DICT = {'1':[],'2':[],'3':[],'4':[],'5':[]}
 with open('server/config/maps.csv','rb') as map_csv:
 	maps = csv.reader(map_csv,delimiter=',')
 	for map in maps:
 		act = map[0]
 		name = map[1]
-		MAP.append('Act ' + act + ' - ' + name)
+		MAP_DICT[act].append(name)
 map_var = StringVar(DROPDOWN_FRAME)
-map_var.set('Map')
+#map_var.set('Map')
 
-# Bounty drowpdown vars
-BOUNTY = ['Not implemented yet']
+# Bounty dropdown vars
+BOUNTY=['Bounty']
+BOUNTY_DICT = {'1':[],'2':[],'3':[],'4':[],'5':[]}
+with open('server/config/bounties.csv','rb') as bounty_csv:
+	bounties = csv.reader(bounty_csv,delimiter=',')
+	for b in bounties:
+		act = b[0]
+		name = b[1]
+		BOUNTY_DICT[act].append(name)
 bounty_var = StringVar(DROPDOWN_FRAME)
-bounty_var.set('Bounty')
 
 #########
 ## string var declarations for all the labels and fields
@@ -146,7 +158,35 @@ def lege_subtract():
 def lege_add():
     lege_mob_var.set(lege_mob_var.get()+1)
 
-    
+def change_dropdowns(selection):
+	bounty_var.set('')
+	bounty_dropdown['menu'].delete(0,'end')
+	if selection == 'Act I':
+		for b in BOUNTY_DICT['1']:
+			bounty_dropdown['menu'].add_command(label=b,command=Tkinter._setit(bounty_var,b))
+		for b in MAP_DICT['1']:
+			map_dropdown['menu'].add_command(label=b,command=Tkinter._setit(bounty_var,b))
+	elif selection == 'Act II':
+		for b in BOUNTY_DICT['2']:
+			bounty_dropdown['menu'].add_command(label=b,command=Tkinter._setit(bounty_var,b))
+		for b in MAP_DICT['2']:
+			map_dropdown['menu'].add_command(label=b,command=Tkinter._setit(bounty_var,b))
+	elif selection == 'Act III':
+		for b in BOUNTY_DICT['3']:
+			bounty_dropdown['menu'].add_command(label=b,command=Tkinter._setit(bounty_var,b))
+		for b in MAP_DICT['3']:
+			map_dropdown['menu'].add_command(label=b,command=Tkinter._setit(bounty_var,b))
+	elif selection == 'Act IV':
+		for b in BOUNTY_DICT['4']:
+			bounty_dropdown['menu'].add_command(label=b,command=Tkinter._setit(bounty_var,b))
+		for b in MAP_DICT['4']:
+			map_dropdown['menu'].add_command(label=b,command=Tkinter._setit(bounty_var,b))
+	elif selection == 'Act V':
+		for b in BOUNTY_DICT['5']:
+			bounty_dropdown['menu'].add_command(label=b,command=Tkinter._setit(bounty_var,b))
+		for b in MAP_DICT['5']:
+			map_dropdown['menu'].add_command(label=b,command=Tkinter._setit(bounty_var,b))
+
 ###############
 # Layout management
 ################
@@ -224,17 +264,22 @@ lege_add_button= Tkinter.Button(MOBS_FRAME,text="+",command=lege_add).grid(row=4
 ## Difficulty Menu
 difficulty_dropdown = Tkinter.OptionMenu(DROPDOWN_FRAME,difficulty_var,*DIFFICULTY).grid(row=0,column=0)
 
+## Act dropdown
+act_dropdown = Tkinter.OptionMenu(DROPDOWN_FRAME,act_var,*ACT,command=change_dropdowns).grid(row=0,column=1)
+
 ## Map dropdown
-map_dropdown = Tkinter.OptionMenu(DROPDOWN_FRAME,map_var,*MAP).grid(row=0,column=1)
+map_dropdown = Tkinter.OptionMenu(DROPDOWN_FRAME,map_var,*MAP)
+map_dropdown.grid(row=1,column=0)
 
 # Bounty dropdown
-#bounty_dropdown = Tkinter.OptionMenu(DROPDOWN_FRAME,bounty_var,*BOUNTY).grid(row=1,column=0,columnspan=2)
+bounty_dropdown = Tkinter.OptionMenu(DROPDOWN_FRAME,bounty_var,*BOUNTY)
+bounty_dropdown.grid(row=1,column=1)
 
 ## Submit data button
-submit_button = Tkinter.Button(SUBMIT_FRAME,text="Submit test",command=submit_test).grid(row=1,column=1)
+submit_button = Tkinter.Button(SUBMIT_FRAME,text="Submit test",command=submit_test).grid(row=2,column=0,columnspan=2)
 
 ## Notes field
-notes_field = Tkinter.Entry(DROPDOWN_FRAME,textvariable=notes_var).grid(row=1,column=0,columnspan=2)
+notes_field = Tkinter.Entry(DROPDOWN_FRAME,textvariable=notes_var).grid(row=3,column=0,columnspan=2)
 
 ####
 # Mainloop
